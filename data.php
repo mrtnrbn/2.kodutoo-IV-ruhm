@@ -5,6 +5,7 @@
 	//kui ei ole sisseloginud, suunan login lehele
 	if (!isset($_SESSION["userId"])) {
 		header("Location: login.php");
+		exit();
 	}
 	
 	
@@ -14,6 +15,7 @@
 		session_destroy();
 		
 		header("Location: login.php");
+		exit();
 		
 	}
 	
@@ -28,6 +30,13 @@
 		
 		
 		 }
+		 
+		 $people = getAllPeople();
+	
+	echo "<pre>";
+	var_dump($people[5]);
+	echo "</pre>";
+
 ?>
 <h1>Data</h1>
 
@@ -41,11 +50,11 @@
 	<form method="POST" >
 			
 			<label>vanus</label><br>
-			<input name="ageDB" type="text">
+			<input name="age" type="text">
 			
 			<br><br>
 
-			<input name="colorDB" placeholder="v2rv" type="color">
+			<input name="color" placeholder="v2rv" type="color">
 			
 			<br><br>
 			
@@ -54,3 +63,48 @@
 	</form>
 	
 </p>
+
+<h2>Arhiiv</h2>
+<?php 
+	
+	$html = "<table>";
+	
+		$html .= "<tr>";
+			$html .= "<th>ID</th>";
+			$html .= "<th>Vanus</th>";
+			$html .= "<th>Värv</th>";
+		$html .= "</tr>";
+		
+		//iga liikme kohta massiivis
+		foreach ($people as $p) {
+			$html .= "<tr>";
+				$html .= "<td>".$p->id."</td>";
+				$html .= "<td>".$p->age."</td>";
+				$html .= "<td>".$p->lightColor."</td>";
+			$html .= "</tr>";
+				}
+		
+	$html .= "</table>";
+	echo $html;
+?>
+
+<h2>Midagi huvitavat</h2>
+<?php 
+	foreach($people as $p) {
+		
+		$style = "
+		
+		    background-color:".$p->lightColor.";
+			width: 40px;
+			height: 40px;
+			border-radius: 20px;
+			text-align: center;
+			line-height: 39px;
+			float: left;
+			margin: 10px;
+		";
+				
+		echo "<p style ='  ".$style."  '>".$p->age."</p>";
+		
+	}
+?>
