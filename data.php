@@ -22,9 +22,9 @@
 		 !empty($_POST["age"])&&
 		 !empty($_POST["color"]) ) {
 		
-		$color = cleanInput($_POST["color"])
+		$color = cleanInput($_POST["color"]);
 		
-		saveEvent(cleanInput($_POST["age"], $_POST["color"], $color);
+		saveEvent(cleanInput($_POST["age"], $_POST["color"]), $color);
 		
 		
 		 }
