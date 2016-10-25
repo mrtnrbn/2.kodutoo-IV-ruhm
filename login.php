@@ -7,6 +7,15 @@
 	require("/home/martreba/config.php");
 	require("functions.php");
 	
+	// kui on sisseloginud siis suunan data lehele
+	if (isset($_SESSION["userId"])) {
+		header("Location: data.php");
+		exit();
+	}
+	
+	var_dump($_POST);
+	var_dump(isset($_POST["signupEmail"]));
+	
 	//var_dump($_GET);
 	
 	//echo "<br>";
@@ -57,6 +66,13 @@
 		}
 		
 	}
+	if (!isset ($_POST["gender"])) {
+			
+			//error
+		}else {
+			// annad väärtuse
+		}
+
 	
 	//vaikimisi väärtus
 	$gender = "";
@@ -92,7 +108,7 @@
 		
 		
 	}
-	
+	$notice="";
 	// kas kasutaja tahab sisse logida
 	if ( isset($_POST["loginEmail"])&&
 		 isset($_POST["loginPassword"])&&

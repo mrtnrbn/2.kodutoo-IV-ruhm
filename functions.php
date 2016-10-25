@@ -5,6 +5,9 @@
 	var_dump($GLOBALS);
 	//require("functions.php");
 	
+	
+	session_start();
+	
 	$database = "if16_martreba";
 	
 	function hello ($eesnimi, $perenimi)	{
@@ -125,6 +128,8 @@
 			SELECT id, age, color
 			FROM whistle
 		");
+		
+		echo $mysqli->error;
 		$stmt->bind_result($id, $age, $color);
 		$stmt->execute();
 		
@@ -149,13 +154,13 @@
 		
 	}			
 	
-	function saveEvent ($age, $color)	{
+	function saveEvent ($age)	{
 		$database = "if16_martreba";
 		
 		
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
 		
-		$stmt = $mysqli->prepare("INSERT INTO whistle (age, color) VALUE (?, ?)");
+		$stmt = $mysqli->prepare("INSERT INTO whistle (age) VALUE (?)");
 		
 		echo $mysqli->error;
 		
@@ -164,7 +169,7 @@
 		// s - string
 		// i - int
 		// d - double
-		$stmt->bind_param("is", $age, $color);
+		$stmt->bind_param("is", $age);
 		
 		//täida käsku
 		if ( $stmt->execute() ) {
