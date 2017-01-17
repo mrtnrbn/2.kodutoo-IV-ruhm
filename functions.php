@@ -1,21 +1,16 @@
 <?php
 
 	// functions.php
-	require("/home/martreba/config.php");
-	var_dump($GLOBALS);
-	//require("functions.php");
+	require_once("../../config.php");
+	//var_dump($GLOBALS);
+
 	
 	
 	session_start();
 	
 	$database = "if16_martreba";
 	
-	function hello ($eesnimi, $perenimi)	{
-		return "Tere tulemast $eesnimi $perenimi!";
-		
 	
-	}
-	//echo ("Martin", "Rebane");
 	
 	
 	function cleanInput($input)	{
@@ -65,7 +60,7 @@
 		
 		$notice = "";
 		
-		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"]);
 		
 		$stmt = $mysqli->prepare("
 			SELECT id, email, password, created
@@ -125,12 +120,12 @@
 		
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
 		$stmt = $mysqli->prepare("
-			SELECT id, age, color
-			FROM whistle
+			SELECT exercise, reps, weight
+			FROM jousaaliprojekt
 		");
 		
-		echo $mysqli->error;
-		$stmt->bind_result($id, $age, $color);
+		
+		$stmt->bind_result($exercise, $reps, $weight);
 		$stmt->execute();
 		
 		$results = array();
@@ -140,9 +135,9 @@
 		while ($stmt->fetch()) {
 			
 			$human = new StdClass();
-			$human->id = $id;
-			$human->age = $age;
-			$human->lightColor = $color;
+			$human->exercise = $exercise;
+			$human->reps = $reps;
+			$human->weight = $weight;
 			
 			
 			//echo $color."<br>";
@@ -177,6 +172,23 @@
 		} else {
 			echo "ERROR ".$stmt->error;
 		}
+	}
 	
+	
+	function saveExercise ($exercise, $reps, $weight)	{
+		
+		$database = "if16_martreba";
+		
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
+		
+		$stmt = $mysqli->prepare("INSERT INTO jousaaliprojekt(exercise, reps, weight) VALUE (?, ?, ?)" );
+		
+		$stmt->bind_param("sii", $exercise, $reps, $weight);
+		
+		if ($stmt->execute()) {
+			echo "success";
+		
+		
+	}
 	}
 ?>
